@@ -1,0 +1,19 @@
+/* Tip! 소스를 짤 때 상위(조상, 부모)요소를 항상 상단에 위치하도록 짜면 추후 헷갈림을 방지할 수 있다!*/
+/* UI 프레임워크 : main.css와 같이 디자인을 사전에 구성해두고 가져다 사용할 수 있도록 구성해놓은 것*/
+
+/*
+.container {
+    width: 300px;
+    margin: auto;
+    background-color: orange;
+}
+
+.btn {
+    display: inline-block;
+    padding : 10px;
+    background-color: royalblue;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;        /*마우스 커서 모양인 손가락 모양으로 바뀜
+}
+*/
