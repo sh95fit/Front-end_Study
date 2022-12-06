@@ -1,0 +1,29 @@
+/* 속성 선택자 */
+
+/* 
+속성 선택자
+
+* ATTR
+속성 A를 포함한 요소 선택
+[] 대괄호 기호로 표시
+
+ex> [HTML의 속성 A] {     해당 속성을 가지고 있는 요소 선택
+        속성 : 값;
+    }
+
+* ATTR=VALUE
+속성 A를 포함하고 값이 value인 요소 선택
+
+ex> [속성 A = 값 value] {
+        속성 : 값;
+    }
+
+*/
+
+[disabled] {
+    background-color: red;
+}
+
+[type="password"] {
+    background-color : purple;
+}
