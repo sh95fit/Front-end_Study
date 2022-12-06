@@ -1,0 +1,23 @@
+/* 속성 - 박스 모델 */
+
+.container {
+
+}
+
+.container .item {
+    width : 150px;
+    height : 100px;
+    background-color: tomato;
+    margin-bottom: 20px;        /*외부 여백 지정!*/
+    padding:20px;
+    border: 7px dotted blue;    /*dashed : 파선, solid : 실선, dotted : 점선*/
+    box-sizing: border-box;     /* 내외부 여백, 윤곽선이 추가되던 상관 없이 width, height에 맞춰 표현*/
+}
+
+.container .item:nth-child(2){
+    box-shadow: 10px 20px 15px rgba(0,0,0,.3); /* 그림자의 x축 거리, y축 거리, 흐린정도, 색상*/  /* rgba(r,g,b,불투명도)*/
+}
+
+.container .item:nth-child(3){
+    opacity: 0.5;   /* opacity : 투명하게 만들 때 사용 / 1 : 불투명 ~ 0 : 투명 */
+}
