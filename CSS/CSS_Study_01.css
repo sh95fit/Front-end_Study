@@ -29,10 +29,24 @@ div {
   - ex> * {
           속성 : 값;
         }
+
  2. 태그 선택자(Type Selector)
   - 태그 이름이 동일한 요소 선택
   - ex> li {
            속성 : 값;
         }
- 3. 
+
+ 3. 클래스 선택자(Class Selector)
+  - HTML class 속성의 값을 선택
+  - ex> .class명 {          (마침표로 클래스 표시)
+           속성 : 값;
+        }
+ 
+ 4. 아이디 선택자(ID Selector)
+  - HTML id 속성의 값을 선택
+  - ex> #id명 {             (#으로 id 표시)
+           속성 : 값;
+        }
+
+
 */
