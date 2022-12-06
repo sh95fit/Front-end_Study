@@ -1,0 +1,14 @@
+/* 속성 - 배경 */
+
+/*저작권 없는 이미지 주소 : https://cdn.pixabay.com/photo/2015/12/04/14/05/code-1076536_960_720.jpg */
+
+.container .item {
+    width: 200px;
+    height: 100px;
+    background-color: royalblue;
+    margin: 10px;
+    background-image: url("https://cdn.pixabay.com/photo/2015/12/04/14/05/code-1076536_960_720.jpg");
+    background-size: 200px;
+    background-repeat: no-repeat;  /*Default값 : repeat*/
+    background-position: center left; /*왼쪽으로부터의 거리, 위쪽으로부터의 간격*/ /*top, bottom left right center*/   
+}
