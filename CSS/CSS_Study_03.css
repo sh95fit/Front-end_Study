@@ -1,0 +1,104 @@
+/* 가상 클래스/요소 선택자 */
+
+/* 
+가상 클래스 선택자(Pseudo-Classes) 
+ - : 기호로 연계
+
+- 사용자 동작과 관련 있는 가상 클래스 선택자
+* HOVER
+선택자 A 요소에 마우스 커서가 올라가 있는 동안 선택
+
+ex> 태그:hover {       
+        속성 : 값;
+    }
+
+* ACTIVE
+선택자 A 요소에 마우스를 클릭하고 있는 동안 선택
+
+ex> 태그:active {
+        속성 : 값;
+    }
+
+* FOCUS
+선택자 A 요소가 포커스되면 선택
+포커스가 가능한 요소는 정해져 있다 ex> input
+포커스가 벗어나면 blur 처리(실제 blur 가상클래스는 없으며 개념적 요소)
+
+ex> 태그:focus {
+        속성 : 값;
+    }
+
+- 특정한 요소를 찾아내는 검색과 관련 있는 가상 클래스 연산자
+* first-child
+선택자 A가 형제 요소 중 첫째라면 선택
+
+ex> .클래스명 태그:first-child {        첫번째 형제 요소가 해당 클래스의 후손인 태그 선택
+        속성 : 값;
+    }
+
+* last-child
+선택자 A가 형제 요소 중 막내(마지막)라면 선택
+
+ex> .클래스명 태그:last-child {         마지막 형재 요소가 해당 클래스의 후손인 태그 선택
+        속성 : 값;
+    }
+
+* nth-child(n)
+선택자 A가 형제 요소 중 n번째라면 선택
+n은 직접적으로 숫자를 반영할 수도 있고
+함수 형태로 표현할 수도 있다(ex> 2n, 2n+1, n+1 등)  / n은 0부터 1씩 증가
+
+ex> .클래스명 *:nth-child(n){           n번째 형제 요소가 해당 클래스에 후손인 모든 태그 선택
+        속성 : 값;
+    }
+
+
+가상 요소 선택자(Pseudo-Elements)
+
+* before
+선택자 A 요소 내부의 맨앞부분에 내용(Content) 삽입
+content 속성을 반드시 포함해야한다!
+before은 인라인(글자) 요소이다!
+:: 기호로 연계
+
+ex> .클래스명::before {                 해당 클래스의 맨앞부분에 텍스트 추가
+        content : "텍스트";
+    }
+
+* after
+선택자 A 요소의 내부 맨뒷부분에 내용(Content) 삽입
+content 속성을 반드시 포함해야한다!
+after 역시 인라인(글자) 요소이다!
+::
+
+ex> .클래스명::after {                 해당 클래스의 맨뒷부분에 텍스트 추가
+        content : "텍스트";
+    }
+
+
+*/
+
+
+div:hover {
+    color : blue;
+}
+
+div:active {
+    color : green;
+}
+
+input:focus{
+    background-color : orange;
+}
+
+.box::before{
+    content: "앞!";
+    color: blue;
+    font-size: 30px;
+}
+
+.box::after{
+    content: "뒤!";
+    color: green;
+    font-size: 20px;
+}
