@@ -1,0 +1,37 @@
+/* 속성 - 배치 */
+/*배치는 어떠한 영역을 기준으로 적용된다*/
+
+
+.container {
+    width: 400px;
+    height: 250px;
+    margin: 50px;
+    padding: 20px;
+    background-color: royalblue;
+    box-sizing: border-box;
+    position: relative; /*배치의 기준점 추가*/
+}
+
+.container .item {
+    width: 70px;
+    height: 70px;
+    background-color: white;
+}
+
+.container .item:nth-child(1) {
+    position: absolute; /*absolute : 부모요소를 기준으로 움직임  / 부모요소(relative)가 존재하면 그것을 기준으로 배치가 이루어짐*/
+    left: 150px;
+    bottom: 100px;
+}
+
+.container .item:nth-child(2) {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
+
+.container .item:nth-child(3) {
+    position: absolute;
+    top: 0px;
+    left: 0px;  
+}
