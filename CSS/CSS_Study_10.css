@@ -1,0 +1,21 @@
+/* 속성 - 플렉스(정렬) */
+
+.container {
+    background-color: orange;
+    display: flex;  /*플렉스를 이용해 수평구조로 만듦*/
+    /* justify-content: flex-end; 수평구조를 오른쪽 끝에 맞춰서 배치 */
+    /* justify-content: flex-start;    수평구조를 좌측 시작점에 맞춰서 배치 */
+    justify-content: center;
+}
+
+.container .item {
+    width: 100px;
+    height: 100px;
+    background-color: royalblue;
+    border : 2px solid black; /*테두리 선 만들기*/
+    box-sizing: border-box; /* 여백, 테투리 추가에 상관 없이 width, height 사이즈에 맞춤*/
+    /* text-align: center; 수평 정렬은 가능하지만 수직 정렬은 불가능 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
