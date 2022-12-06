@@ -17,3 +17,18 @@
     cursor: pointer;        /*마우스 커서 모양인 손가락 모양으로 바뀜
 }
 */
+
+/*  Bootstrap 반응형 width 확인
+.box {
+    height: 100px;
+    background-color: orange;
+}
+*/
+
+/* Bootstrap 반응형 row 확인
+.box {
+    height: 100px;
+    background-color: royalblue;
+    font-size: 50px;
+    border: 4px solid black;
+} */
