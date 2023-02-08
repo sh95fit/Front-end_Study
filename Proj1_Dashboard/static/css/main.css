@@ -20,6 +20,10 @@
     --red: #FC3B56;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     background: var(--grey);
 }
@@ -35,13 +39,23 @@ li {
 /* SIDEBAR */
 #sidebar {
     position: fixed;
-    width: 260px;
+    max-width: 260px;
+    width: 100%;
     background: var(--light);
     top:0;
     left:0;
     height: 100%;
     overflow-y: auto;
     scrollbar-width: none;
+    transition: all .3s ease;
+    z-index: 200;
+}
+
+#sidebar.hide {
+    max-width: 60px;
+}
+#sidebar.hide:hover {
+    max-width: 260px;
 }
 
 /* 스크롤바 없애기 */
@@ -52,18 +66,31 @@ li {
 #sidebar .brand {
     font-size: 24px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     height: 64px;
     font-weight: 700;
     color: var(--blue);
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: var(--light);
+    transition: all .3s ease;
+    padding: 0 6px;
+    white-space: nowrap;
 }
+
+/* #sidebar.hide .brand {
+    justify-content: flex-start;
+} */
 
 #sidebar .icon {
     min-width: 48px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 6px;
 }
 
 #sidebar .icon-right {
@@ -75,7 +102,17 @@ li {
 #sidebar .side-menu {
     margin: 36px 0;
     padding: 0 20px;
+    transition: all .3s ease;
 }
+
+#sidebar.hide .side-menu {
+    padding: 0 6px;
+}
+
+#sidebar.hide:hover .side-menu {
+    padding: 0 20px;
+}
+
 
 #sidebar .side-menu a {
     display: flex;
@@ -86,6 +123,7 @@ li {
     transition: all .3s ease;
     border-radius: 10px;
     margin: 4px 0;
+    white-space: nowrap;
 }
 
 #sidebar .side-menu > li > a:hover {
@@ -108,10 +146,20 @@ li {
     text-transform: uppercase;
     font-weight: 700;
     color: var(--dark-grey);
+    transition: all .3s ease;
+    white-space: nowrap;
+}
+
+#sidebar.hide:hover .divider {
+    text-align: left;
+}
+
+#sidebar.hide .divider {
+    text-align: center;
 }
 
 #sidebar .side-dropdown {
-    padding-left: 48px;
+    padding-left: 54px;
     max-height: 0;
     overflow-y: hidden;
     transition: all .15s ease;
@@ -128,6 +176,14 @@ li {
 #sidebar .ads {
     width: 100%;
     padding: 20px;
+}
+
+#sidebar.hide .ads {
+    display: none;
+}
+
+#sidebar.hide:hover .ads {
+    display: block;
 }
 
 #sidebar .ads .wrapper {
@@ -171,6 +227,12 @@ li {
     width: calc(100% - 260px);
     left: 260px;
     margin-top: -22px;
+    transition: all .3s ease;
+}
+
+#sidebar.hide + #content {
+    width: calc(100% - 60px);
+    left: 60px;
 }
 
 /* NAVBAR */
@@ -181,6 +243,10 @@ nav {
     display: flex;
     align-items: center;
     grid-gap: 28px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 
 nav .toggle-sidebar {
@@ -472,6 +538,18 @@ main .content-data .head .menu-link a:hover {
     background: var(--grey);
 }
 
+main .content-data .chart {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+/* 스크롤바 없애기 */
+main .content-data .chart::-webkit-scrollbar {
+    display: none;
+}
+
 main .chat-box {
     width: 100%;
     max-height: 360px;
@@ -529,7 +607,7 @@ main .chat-box .chat p {
     font-size: 14px;
     padding: 6px 10px;
     display: inline-block;
-    max-width: 240px;
+    max-width: 400px;
     line-height: 150%;
 }
 
@@ -570,6 +648,7 @@ main .form-group input {
     background: var(--grey);
     border: none;
     transition: all .3s ease;
+    width: 100%;
 }
 
 main .form-group input:focus {
@@ -588,4 +667,20 @@ main .btn-send {
 
 main .btn-send:hover {
     background: var(--dark-blue);
+}
+
+
+@media screen and (max-width: 768px) {
+    #content {
+        position: relative;
+        width: calc(100% - 60px);
+        /* left: 60px; */
+        margin-top: -22px;
+        transition: all .3s ease;
+    }
+    nav .nav-link,
+    nav .divider {
+        display: none;
+    }
+
 }
