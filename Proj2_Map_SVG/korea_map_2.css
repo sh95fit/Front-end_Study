@@ -1,3 +1,20 @@
 .land {
     fill: #1775F1;
+    fill-opacity: .9;
+    transition: all .3s ease;
+}
+
+.land:hover {
+    fill: #0C5FCD;
+    stroke: #000;
+    stroke-width: 3;
+    /* box-shadow: 1px 1px 3px 1px #dadce0; */
+}
+
+.background {
+    background-size : 150px;
+    width: 300px;
+    height: 300px;
+    border: 2px solid;
+    color: pink;
 }
