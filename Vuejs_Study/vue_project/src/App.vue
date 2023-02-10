@@ -33,11 +33,16 @@
       <button v-on:click="increase(i)">Select</button> <span>수량 : {{ count[i] }}</span>
     </div>
 
+    <div>
+      <h4>{{ info[0].title }}</h4>
+    </div>
 
   </div>
 </template>
 
 <script>
+
+import data from './assets/test.js';
 
 export default {
   name: 'App',
@@ -52,6 +57,7 @@ export default {
       prices : ['50', '30', '40'],
       count : [0,0,0],
       modal_state : false,
+      info : data,
     }
   },
   methods : {
