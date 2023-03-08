@@ -2,6 +2,7 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
+    <br>
     <router-link to="/databinding/string">String</router-link> |
     <router-link to="/databinding/html">HTML</router-link> |
     <router-link to="/databinding/input">Input</router-link> |
@@ -12,6 +13,7 @@
     <router-link to="/databinding/list">List</router-link> |
     <router-link to="/databinding/class">Class</router-link> |
     <router-link to="/databinding/style">Style</router-link> |
+    <br>
     <router-link to="/event/click">Click</router-link> |
     <router-link to="/event/change">Change</router-link> |
     <router-link to="/event/key">Key</router-link>
