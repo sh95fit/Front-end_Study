@@ -9,7 +9,9 @@
     <router-link to="/databinding/checkbox">CheckBox</router-link> |
     <router-link to="/databinding/radio">RadioBox</router-link> |
     <router-link to="/databinding/attribute">Attribute</router-link> |
-    <router-link to="/databinding/list">List</router-link>
+    <router-link to="/databinding/list">List</router-link> |
+    <router-link to="/databinding/class">Class</router-link> |
+    <router-link to="/databinding/style">Style</router-link>
   </nav>
   <router-view/>
 </template>
