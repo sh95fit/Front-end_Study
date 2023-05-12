@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 
+import {useState} from 'react';
+
 // 컴포넌트 - 사용자정의함수
 function Header(props){
   // console.log('props', props, props.title);
@@ -19,7 +21,7 @@ function Nav(props){
     lis.push(<li key={t.id}>
       <a id={t.id} href={'/read/'+t.id} onClick={event => {
         event.preventDefault();
-        props.onChangeMode(event.target.id);
+        props.onChangeMode(Number(event.target.id));
       }}>{t.title}</a>
     </li>);
   }
@@ -39,11 +41,31 @@ function Article(props){
 
 function App() {
 
+  // let _mode = useState('WELCOME');
+  // let mode = _mode[0];
+  // let setMode = _mode[1];
+  let [mode, setMode] = useState('WELCOME');
+  let [id, setId] = useState(null);
+
   const topics = [
     {id:1, title:'html', body:'html is ...'},
     {id:2, title:'css', body:'css is ...'},
     {id:3, title:'javascript', body:'javascript is ...'}
   ]
+
+  let content = null;
+  if(mode === 'WELCOME') {
+    content = <Article title="Welcome" body="Hello, WEB"></Article>
+  } else if(mode === 'READ') {
+    let title, body = null;
+    for(let i=0; i<topics.length; i++) {
+      if(topics[i].id === id) {
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
+    content = <Article title={title} body={body}></Article>
+  }
 
   return (
     <div className="App">
@@ -64,12 +86,14 @@ function App() {
       </article> */}
 
       <Header title="REACT" onChangeMode={() =>{
-        alert('Hello REACT Study');
+        setMode("WELCOME");
       }}></Header>
       <Nav topics={topics} onChangeMode={(id) => {
-        alert(id);
+        setMode("READ");
+        setId(id);
       }}></Nav>
-      <Article title="Welcome" body="Hello, REACT"></Article>
+      { content }
+      {/* <Article title="Welcome" body="Hello, REACT"></Article> */}
     </div>
   );
 }
