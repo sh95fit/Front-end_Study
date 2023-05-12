@@ -55,9 +55,34 @@ function Create(props){
   </article>
 }
 
+function Update(props){
+  /* props.title과 props.body를 반영할 경우 수정이 되지 않음! state로 변환하며 활용 필요 */
+  const [title, setTitle] = useState(props.title);
+  const [body, setBody] = useState(props.body);
+
+  return <article>
+    <h2>Update</h2>
+    <form onSubmit={event => {
+      event.preventDefault();
+      const title = event.target.title.value;
+      const body = event.target.body.value;
+      props.onUpdate(title, body);
+    }}>
+      {/* props.title과 props.body를 반영할 경우 수정이 되지 않음! state로 변환하며 활용 필요 */}
+      {/* react에서는 onChange가 수정 시마다 호출되므로 아래와 같이 값을 갱신(setTitle, setBody)해줘야 함 */}
+      <p><input type="text" name="title" placeholder="title" value={title} onChange={event => {
+        setTitle(event.target.value);
+      }}/></p>
+      <p><textarea name="body" placeholder="body" value={body} onChange={event => {
+        setBody(event.target.value);
+      }}></textarea></p>
+      <p><input type="submit" value="Update" /></p>
+    </form>
+  </article>
+}
+
 
 function App() {
-
   // let _mode = useState('WELCOME');
   // let mode = _mode[0];
   // let setMode = _mode[1];
@@ -73,6 +98,8 @@ function App() {
   ]);
 
   let content = null;
+  let contextControl = null;
+
   if(mode === 'WELCOME') {
     content = <Article title="Welcome" body="Hello, WEB"></Article>
   } else if(mode === 'READ') {
@@ -84,6 +111,24 @@ function App() {
       }
     }
     content = <Article title={title} body={body}></Article>
+    // 복수 태그 그룹핑! <> 태그들 </>
+    contextControl = <>
+      <li><a href={'/update/' + id} onClick={event => {
+        event.preventDefault();
+        setMode('UPDATE');
+      }}>Update</a></li>
+      <li><input type="button" value="Delete" onClick={() => {
+        const newTopics = []
+        for(let i=0; i<topics.length; i++) {
+          if(topics[i].id !== id){
+            newTopics.push(topics[i]);
+          }
+        }
+        setTopics(newTopics);
+        setMode('WELCOME');
+        setNextId(nextId-1);
+      }}/></li>
+    </>
   } else if(mode === 'CREATE'){
     content = <Create onCreate={(_title, _body) =>{
       const newTopic = {id:nextId, title:_title, body:_body}
@@ -95,6 +140,31 @@ function App() {
       setId(nextId);
       setNextId(nextId+1);
     }}></Create>
+  } else if(mode === 'UPDATE') {
+
+    let title, body = null;
+    for(let i=0; i<topics.length; i++) {
+      if(topics[i].id === id) {
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
+
+    content = <Update title={title} body={body} onUpdate={(title, body) => {
+      const newTopics = [...topics]
+      const updatedTopic = {id:id, title:title, body:body}
+
+      for(let i=0; i<newTopics.length; i++){
+        if(newTopics[i].id === id){
+          newTopics[i] = updatedTopic;
+          break;
+        }
+      }
+      setTopics(newTopics);
+      setMode('READ');
+      // setId(id);
+
+    }}></Update>
   }
 
   return (
@@ -125,11 +195,16 @@ function App() {
       }}></Nav>
 
       { content }
-      <a href="/create" onClick={event => {
-        event.preventDefault();
-        setMode('CREATE');
-      }}>Create</a>
-      {/* <Article title="Welcome" body="Hello, REACT"></Article> */}
+      <ul>
+        <li><a href="/create" onClick={event => {
+              event.preventDefault();
+              setMode('CREATE');
+            }}>Create</a></li>
+            {contextControl}
+
+        {/* <li><a href="/update">Update</a></li> */}
+        {/* <Article title="Welcome" body="Hello, REACT"></Article> */}
+      </ul>
     </div>
   );
 }
