@@ -7,7 +7,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-  <h1><a href="index.html">WEB</a></h1>
+  <h1><a href="#!welcome" onclick="fetchPage('welcome')">WEB</a></h1>
   <input type="button" value="night" onclick="
     document.querySelector('body').style.backgroundColor = 'black';
     document.querySelector('body').style.color = 'white';
@@ -16,11 +16,7 @@
     document.querySelector('body').style.backgroundColor = 'white';
     document.querySelector('body').style.color = 'black';
   ">
-  <ol>
-    <li><a onclick="fetchPage('html');">HTML</a></li>
-    <li><a onclick="fetchPage('css');">CSS</a></li>
-    <li><a onclick="fetchPage('javascript');">JavaScript</a></li>
-  </ol>
+  <ol id="nav"></ol>
 
   <article></article>
 
@@ -36,6 +32,28 @@
         })
       })
     }
+    if(location.hash){
+      fetchPage(location.hash.substr(2));
+    } else {
+      fetchPage('./file_server/welcome');
+    }
+
+    fetch('./file_server/list').then(function (response) {
+      response.text().then(function(text) {
+        if(response.status =='200') {
+          var navList = text.trim().split(',');
+          // console.log(navList)
+          tags = '';
+          for(let list of navList){
+            var tag = '<li><a href="#!'+list+'" onclick="fetchPage(\''+list+'\')">'+ list +'</a></li>';
+            tags = tags + tag;
+          }
+          document.querySelector('#nav').innerHTML = tags;
+        } else {
+          alert('Not found');
+        }
+      })
+    });
   </script>
 </body>
 </html>
