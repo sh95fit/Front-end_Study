@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fetch API</title>
+</head>
+<body>
+  <article>
+
+  </article>
+  <input type="button" value="fetch" onclick="
+    // 비동기(Asynchronous) 통신
+    fetch('./file_server/css').then(function(response){
+      response.text().then(function(text){
+        if(response.status == '200'){
+          document.querySelector('article').innerHTML = text;
+        } else {
+          alert('Not found');
+        }
+      })
+    })
+  ">
+</body>
+</html>
