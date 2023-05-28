@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import DisplayNumber from "./DisplayNumber"
+import DisplayNumber from "../containers/DisplayNumberWrap"
 
 export default class DisplayNumberRoot extends Component {
     render() {
