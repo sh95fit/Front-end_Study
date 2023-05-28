@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import store from '../store'
+// import store from '../store'
 
 export default class DisplayNumber extends Component {
     // state = {number:store.getState().number}
