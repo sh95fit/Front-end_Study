@@ -22,7 +22,7 @@ export default class Control extends Component {
         <li>
           <input type="button" value="Delete" onClick={function(e){
             e.preventDefault();
-            this.props.onClick('DELETE');
+            this.props.onClick('DELETE_PROCESS');
           }.bind(this)}></input>
         </li>
       </ul>

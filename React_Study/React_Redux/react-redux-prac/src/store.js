@@ -43,8 +43,18 @@ function rootReducer(state=initState, action) {
       }
       return content;
     })
-    return {...state, contents:updateContents, mode:'READ', selected_content_id:action.id}
-  };
+    return {...state, contents:updateContents, mode:'READ', selected_content_id:action.id};
+  } else if(action.type === "DELETE_PROCESS") {
+    var deleteContents = state.contents.filter(function(e){
+      if(e.id === state.selected_content_id){
+        return false;
+      }
+      return true;
+    })
+    return {...state, contents:deleteContents, mode:'WELCOME'};
+  }
+
+
   return state;
 }
 
