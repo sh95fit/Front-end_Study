@@ -5,7 +5,7 @@ import './App.css';
 import {Provider, useSelector, useDispatch} from 'react-redux';
 import store from './store';
 // import counterSlice from './counterSlice';
-import {up} from './counterSlice';
+import {up, asyncUpFetch} from './counterSlice';
 
 /*
 function reducer(state, action) {
@@ -25,14 +25,24 @@ function Counter() {
   const count = useSelector(state => {
     return state.counter.value;
   });
+  const status = useSelector(state=>{
+    return state.counter.status;
+  });
   return <div>
     <button onClick={() => {
       // dispatch({type:'count/up', step:2});
       // dispatch(counterSlice.actions.up(2))
       dispatch(up(2))
     }}>+</button> {count}
+
+    <button onClick={()=>{
+      dispatch(asyncUpFetch());
+    }}>+ async fetch</button><br/>
+
+    <div>{count} | {status}</div>
   </div>
 }
+
 
 function App() {
   return (
