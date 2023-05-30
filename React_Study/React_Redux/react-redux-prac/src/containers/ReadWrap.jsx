@@ -1,4 +1,4 @@
-import Article from "../components/Article";
+import Read from "../components/Read";
 import { connect } from 'react-redux';
 
 
@@ -23,4 +23,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Article);
+export default connect(mapStateToProps)(Read);

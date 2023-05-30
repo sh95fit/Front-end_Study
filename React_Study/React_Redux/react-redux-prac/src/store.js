@@ -8,6 +8,7 @@ var initState = {
     desc:'Hello, WEB'
   },
   selected_content_id:null,
+  max_content_id:3,
   contents: [
     {id:1, title:'HTML', desc:'HTML is ...'},
     {id:2, title:'CSS', desc:'CSS is ...'},
@@ -20,6 +21,12 @@ function rootReducer(state=initState, action) {
     return {...state, mode:action.type};
   } else if(action.type === 'READ') {
     return {...state, mode:'READ', selected_content_id:action.id}
+  } else if(action.type === "CREATE") {
+    return {...state, mode:'CREATE'}
+  } else if(action.type === "CREATE_PROCESS") {
+    var newId = state.max_content_id+1
+    var newContents = [...state.contents, {id:newId, title:action.title, desc:action.desc}];
+    return {...state, contents:newContents, max_content_id:newId, mode:'READ', selected_content_id:newId}
   }
   return state;
 }
