@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import Header from './components/Header'
-import Nav from './components/Nav'
-import Article from './components/Article'
+import Nav from './containers/NavWrap'
+import Article from './containers/ArticleWrap'
 
 
 function App() {
