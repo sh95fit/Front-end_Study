@@ -27,7 +27,24 @@ function rootReducer(state=initState, action) {
     var newId = state.max_content_id+1
     var newContents = [...state.contents, {id:newId, title:action.title, desc:action.desc}];
     return {...state, contents:newContents, max_content_id:newId, mode:'READ', selected_content_id:newId}
-  }
+  } else if(action.type === "UPDATE") {
+    return {...state, mode:'UPDATE'}
+  } else if(action.type === "UPDATE_PROCESS") {
+    // var updateContents = [...state.contents];
+    // for(var i=0; i<updateContents.length; i++){
+    //   if(updateContents[i].id === action.id) {
+    //     updateContents[i].title = action.title;
+    //     updateContents[i].desc = action.desc;
+    //   }
+    // }
+    var updateContents = state.contents.map(content => {
+      if(content.id === action.id) {
+        return {...content, title:action.title, desc:action.desc};
+      }
+      return content;
+    })
+    return {...state, contents:updateContents, mode:'READ', selected_content_id:action.id}
+  };
   return state;
 }
 

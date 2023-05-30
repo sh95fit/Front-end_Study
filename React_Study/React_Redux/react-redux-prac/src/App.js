@@ -6,6 +6,7 @@ import Read from './containers/ReadWrap'
 import Control from './containers/ControlWrap'
 import Create from './containers/CreateWrap'
 import { connect } from 'react-redux';
+import Update from './containers/UpdateWrap'
 
 class App extends Component {
   render() {
@@ -16,6 +17,8 @@ class App extends Component {
       article = <Create />
     } else if(this.props.mode === 'WELCOME') {
       article = <Read />
+    } else if(this.props.mode === 'UPDATE') {
+      article = <Update />
     }
     return (
         <div className="App">
