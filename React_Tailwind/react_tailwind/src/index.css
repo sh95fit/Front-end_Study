@@ -1,3 +1,26 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+
+
+/* 사이드바 커스터마이징 */
+@layer components {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #a5b4fc;
+    width: 5px;
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar-dark::-webkit-scrollbar-thumb {
+    background-color: #312e81;
+  }
+}
