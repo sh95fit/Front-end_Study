@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from "./Card"
 import Header from './Header'
+import Details from './Details'
 
 import { mockSearchResults } from "../constants/mock"
 import { mockCompanyDetails } from "../constants/mock"
@@ -19,7 +20,8 @@ const Dashboard = () => {
         <Card>Overview</Card>
       </div>
       <div className="row-span-2 xl:row-span-3">
-        <Card>Details</Card>
+        {/* <Card>Details</Card> */}
+        <Details details={mockCompanyDetails}></Details>
       </div>
     </div>
   )
