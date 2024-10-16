@@ -18,7 +18,7 @@ const Details = ( {details} ) => {
 
   return (
     <Card>
-      <ul className="flex flex-col justify-between w-full h-full divide-y">
+      <ul className="flex flex-col justify-between w-full h-full divide-y-1">
         {Object.keys(detailList).map((item) => {
           return (
             <li key={item} className='flex items-center justify-between flex-1'>
