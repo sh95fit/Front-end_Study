@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { mockSearchResults } from "../constants/mock"
 
 import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid"
 import SearchResults from './SearchResults';
+import ThemeContext from '../context/ThemeContext';
 
 const Search = () => {
+
+  const { darkMode } = useContext(ThemeContext)
 
   const [input, setInput] = useState("");
   const [bestMatches, setBestMatches] = useState(mockSearchResults.result);
@@ -20,11 +23,17 @@ const Search = () => {
   }
 
   return (
-    <div className="relative z-50 flex my-4 bg-white border-2 rounded-md item-center w-96 border-neutral-200">
+    // <div className="relative z-50 flex my-4 bg-white border-2 rounded-md item-center w-96 border-neutral-200">
+    <div className={`relative z-50 flex my-4 bg-white border-2 rounded-md item-center w-96
+                    ${darkMode ? "bg-gray-900 border-gray-900" : "border-neutral-200"}
+    `}>
       <input
         type="text"
         value={input}
-        className="w-full px-4 py-2 rounded-md focus:outline-none"
+        // className="w-full px-4 py-2 rounded-md focus:outline-none"
+        className={`w-full px-4 py-2 rounded-md focus:outline-none
+                    ${darkMode ? "bg-gray-900" : null}
+        `}
         placeholder="Search stock..."
         onChange={ (event) => {setInput(event.target.value)} }
         onKeyUp={(event) => {if (event.key === "Enter") {updateBestMatchs();}}}
