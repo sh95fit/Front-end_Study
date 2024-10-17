@@ -6,20 +6,32 @@ import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid"
 import SearchResults from './SearchResults';
 import ThemeContext from '../context/ThemeContext';
 
+import { searchSymbols } from '../api/stock-api';
+
 const Search = () => {
 
   const { darkMode } = useContext(ThemeContext)
 
   const [input, setInput] = useState("");
-  const [bestMatches, setBestMatches] = useState(mockSearchResults.result);
+  const [bestMatches, setBestMatches] = useState([]);
 
   const clear = () => {
     setInput("")
     setBestMatches([]);
   };
 
-  const updateBestMatchs = () => {
-    setBestMatches(mockSearchResults.result);
+  const updateBestMatchs = async () => {
+    try {
+      if (input) {
+        const searchResults = await searchSymbols(input);
+        const result = searchResults.result;
+        setBestMatches(result);
+      }
+    }
+    catch (error) {
+      setBestMatches([])
+      console.log(error);
+    }
   }
 
   return (
