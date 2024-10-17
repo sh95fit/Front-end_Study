@@ -20,6 +20,7 @@ const SearchResults = ({ results }) => {
             // className="flex items-center justify-between p-4 m-2 rounded-md cursor-pointer hover:bg-indigo-200"
             className={`flex items-center justify-between p-4 m-2 rounded-md cursor-pointer
                         ${darkMode ? "hover:bg-indigo-600" : "hover:bg-indigo-200"}
+                        transition duration-300
             `}
             onClick={() => {
               setStockSymbol(item.symbol);

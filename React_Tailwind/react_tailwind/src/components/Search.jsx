@@ -59,7 +59,7 @@ const Search = () => {
 
       <button
         onClick={updateBestMatchs}
-        className='flex items-center justify-center w-8 h-8 p-2 m-1 bg-indigo-600 rounded-md'
+        className='flex items-center justify-center w-8 h-8 p-2 m-1 transition duration-300 bg-indigo-600 rounded-md hover:ring-2 ring-indigo-400'
       >
         <MagnifyingGlassIcon className='w-4 h-4 fill-gray-100' />
       </button>
