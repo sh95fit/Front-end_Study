@@ -1,0 +1,11 @@
+css
+코드 복사
+.dropzone {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed gray;
+  background-color: #f9f9f9;
+}
