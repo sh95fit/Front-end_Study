@@ -27,7 +27,7 @@ const Table = () => {
     <div>
       <button onClick={()=>{onExportClick()}}>Export</button>
       <div
-        className={"ag-theme-quartz-dark"}
+        className={"ag-theme-quartz"}
         style={{ width: '100%', height: '100%' }}
       >
         <AgGridReact
