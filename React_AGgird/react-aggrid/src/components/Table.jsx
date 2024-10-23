@@ -7,16 +7,25 @@ import "ag-grid-community/styles/ag-grid.css";
 // Optional Theme applied to the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
-import { rowMockData, colMockDefs, defaultMockColDef } from '../mock/data';
+import { rowMockData, colMockDefs, defaultMockColDef, colFetchDefs } from '../mock/data';
 
 const Table = () => {
 
   const [rowData, setRowData] = useState(rowMockData);
-  const [colDefs, setColDefs] = useState(colMockDefs);
+  // const [colDefs, setColDefs] = useState(colMockDefs);
+  const [colDefs, setColDefs] = useState(colFetchDefs);
 
   let gridApi;
   const onGridReady=params=> {
     gridApi=params.api
+
+    // data 불러오기
+    console.log("data import")
+    fetch("https://jsonplaceholder.typicode.com/comments")
+    .then(res=> res.json())
+    .then(result=> {
+      console.log(result)
+      params.api.applyTransaction({add:result})})
   }
 
   const onExportClick = () => {
@@ -32,7 +41,7 @@ const Table = () => {
       >
         <AgGridReact
             domLayout='autoHeight'
-            rowData={rowData}
+            // rowData={rowData}
             columnDefs={colDefs}
             defaultColDef={defaultMockColDef}
             rowSelection={{ mode: 'multiRow', checkboxes: true }}

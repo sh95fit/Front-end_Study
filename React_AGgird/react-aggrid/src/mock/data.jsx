@@ -7,13 +7,13 @@ export const rowMockData = [
 export const colMockDefs = [
   { headerName: "Make", field: "make" },
   { headerName: "Model", field: "model" },
-  { headerName: "Price", field: "price", valueFormatter: p => '$ ' + p.value.toLocaleString(),
+  { headerName: "Price", field: "price",
     // cellStyle:(params)=>(
     //   params.value >= 30000 ? {color: 'green', borderLeft:'4px green solid'} : {color: "red", borderLeft:'4px red solid'}
     // ),
-    cellClass:(params)=>(
-      params.value >= 30000 ? "moreThan30000" : "lessThan30000"
-    )
+    // cellClass:(params)=>(
+    //   params.value >= 30000 ? "moreThan30000" : "lessThan30000"
+    // )
   },
   { headerName: "Electric", field: "electric" },
   { headerName: "Action", field: "price",
@@ -21,6 +21,13 @@ export const colMockDefs = [
       return <button className="flex items-center justify-center h-full p-1 border-4 rounded-lg border-indigo-500/100" onClick={() => window.alert(`${params.data.make} ${params.data.model} ${params.data.price}`)}>Action</button>;
     }
   }
+]
+
+export const colFetchDefs = [
+  { headerName: "ID", field:"id" },
+  { headerName: "Name", field:"name"},
+  { headerName: "E-mail", field:"email"},
+  { headerName: "Body", field:"body"},
 ]
 
 // 개별 설정 시 colDefs에 각 필드에 지정해주면 된다.
