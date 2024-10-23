@@ -1,10 +1,17 @@
 import React from 'react'
 import './App.css'
-import FileDropzone from './components/FileDropzone'
+
+import Table from './components/Table';
+
+// import FileDropzone from './components/FileDropzone'
+
 
 function App() {
   return (
-    <FileDropzone />
+    // <FileDropzone />
+    <div>
+      <Table />
+    </div>
   )
 }
 
