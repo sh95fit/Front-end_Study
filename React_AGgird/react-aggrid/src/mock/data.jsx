@@ -24,4 +24,4 @@ export const colMockDefs = [
 ]
 
 // 개별 설정 시 colDefs에 각 필드에 지정해주면 된다.
-export const defaultMockColDef={sortable:true, editable:true, filter:true, floatingFilter: true, flex:1}
+export const defaultMockColDef={sortable:true, editable:true, filter:true, floatingFilter: true, flex:1, tooltipValueGetter:(params)=>(`${params.data.model} ${params.data.price}`), headerTooltip:"header info"}

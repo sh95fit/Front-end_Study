@@ -37,6 +37,8 @@ const Table = () => {
             defaultColDef={defaultMockColDef}
             rowSelection={{ mode: 'multiRow', checkboxes: true }}
             onGridReady={onGridReady}
+            enableBrowserTooltips={true}
+            tooltipShowDelay={{tooltipShowDelay:2}}
         />
       </div>
     </div>
