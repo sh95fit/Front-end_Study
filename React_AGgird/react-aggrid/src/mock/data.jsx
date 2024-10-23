@@ -7,7 +7,14 @@ export const rowMockData = [
 export const colMockDefs = [
   { headerName: "Make", field: "make" },
   { headerName: "Model", field: "model" },
-  { headerName: "Price", field: "price", valueFormatter: p => '$ ' + p.value.toLocaleString() },
+  { headerName: "Price", field: "price", valueFormatter: p => '$ ' + p.value.toLocaleString(),
+    // cellStyle:(params)=>(
+    //   params.value >= 30000 ? {color: 'green', borderLeft:'4px green solid'} : {color: "red", borderLeft:'4px red solid'}
+    // ),
+    cellClass:(params)=>(
+      params.value >= 30000 ? "moreThan30000" : "lessThan30000"
+    )
+  },
   { headerName: "Electric", field: "electric" },
   { headerName: "Action", field: "price",
     cellRenderer:(params)=> {
