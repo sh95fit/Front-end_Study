@@ -32,6 +32,18 @@ const Table = () => {
     gridApi.exportDataAsCsv();
   }
 
+  const rowSelectionType = () => {
+    return { mode: 'multiRow', checkboxes: true, isRowSelectable:(node)=>{return node.data ? (node.data.id%2===0 || node.data.email.includes(".org")) : false } }
+  }
+
+  const onSelectionChanged = (event) => {
+    console.log(event.api.getSelectedRows())
+  }
+
+  const onRowSelected = (node) => {
+    console.log(node)
+  }
+
   return (
     <div>
       <button onClick={()=>{onExportClick()}}>Export</button>
@@ -44,7 +56,9 @@ const Table = () => {
             // rowData={rowData}
             columnDefs={colDefs}
             defaultColDef={defaultMockColDef}
-            rowSelection={{ mode: 'multiRow', checkboxes: true }}
+            rowSelection={rowSelectionType()}
+            onRowSelected={onRowSelected}
+            onSelectionChanged={onSelectionChanged}
             onGridReady={onGridReady}
             enableBrowserTooltips={true}
             tooltipShowDelay={{tooltipShowDelay:2}}
