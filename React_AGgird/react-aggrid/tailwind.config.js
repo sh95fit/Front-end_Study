@@ -5,6 +5,13 @@ export default {
   ],
   theme: {
     extend: {},
+    fontSize: {
+      '4xl': ['2.4rem', {
+        lineHeight: '2.5rem',
+        letterSpacing: '-0.005em',
+        fontWeight: '800',
+      }],
+    }
   },
   plugins: [],
 }

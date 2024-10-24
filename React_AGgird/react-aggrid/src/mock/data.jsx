@@ -27,7 +27,7 @@ export const colFetchDefs = [
   { headerName: "ID", field:"id" },
   { headerName: "Name", field:"name"},
   { headerName: "E-mail", field:"email"},
-  { headerName: "Body", field:"body"},
+  { headerName: "Body", field:"body", hide:true},
 ]
 
 // 개별 설정 시 colDefs에 각 필드에 지정해주면 된다.

@@ -15,11 +15,13 @@ const Table = () => {
   // const [colDefs, setColDefs] = useState(colMockDefs);
   const [colDefs, setColDefs] = useState(colFetchDefs);
 
-  const [gridApi, setGridApi] = useState();
+  const [gridApi, setGridApi] = useState(null);
+
+  const [hideColumn, setHideColumn] = useState(true)
 
   const onGridReady=params=> {
     // gridApi=params.api
-    setGridApi(params)
+    setGridApi(params.api)
 
     // data 불러오기
     console.log("data import")
@@ -51,20 +53,33 @@ const Table = () => {
   }
 
   const onPaginationChange = (pageSize) => {
-    gridApi.api.updateGridOptions({
+    gridApi.updateGridOptions({
       paginationPageSize:pageSize
     }); // paginationSetPageSize 등 메서드가 삭제 되고 setGridOptions 혹은 updateGridOptions를 통해 속성 설정을 해야한다!
   };
 
+  const showColumn = () => {
+    gridApi.setColumnsVisible(["body"], hideColumn)
+    // gridApi.setColumnsVisible(["body","email"], hideColumn)
+    setHideColumn(!hideColumn)
+    gridApi.sizeColumnsToFit()
+  }
+
   return (
-    <div>
-      <button onClick={()=>{onExportClick()}}>Export</button>
-      <select className='ml-10' onChange={(e) => onPaginationChange(e.target.value)}>
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-      </select>
+    <div className='flex flex-col justify-center'>
+      <div className='p-4 text-4xl text-center'>
+        <h1>React-AgGrid</h1>
+      </div>
+      <div>
+        <button className={'bg-blue-500 rounded-md p-2 m-2 text-white font-bold shadow-lg shadow-blue-500/50'} onClick={()=>{onExportClick()}}>Export</button>
+        <select className='p-2 ml-5 font-bold border-2 border-neutral-500 text-neutral-500' onChange={(e) => onPaginationChange(e.target.value)}>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <button className="p-2 m-2 ml-8 font-bold text-white bg-red-500 rounded-md shadow-lg shadow-red-500/50" onClick={showColumn}>Show Body</button>
+      </div>
       <div
         className={"ag-theme-quartz"}
         style={{ width: '100%', height: 900 }}
