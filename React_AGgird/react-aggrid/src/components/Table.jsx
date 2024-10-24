@@ -15,9 +15,11 @@ const Table = () => {
   // const [colDefs, setColDefs] = useState(colMockDefs);
   const [colDefs, setColDefs] = useState(colFetchDefs);
 
-  let gridApi;
+  const [gridApi, setGridApi] = useState();
+
   const onGridReady=params=> {
-    gridApi=params.api
+    // gridApi=params.api
+    setGridApi(params)
 
     // data 불러오기
     console.log("data import")
@@ -25,7 +27,11 @@ const Table = () => {
     .then(res=> res.json())
     .then(result=> {
       console.log(result)
-      params.api.applyTransaction({add:result})})
+      params.api.applyTransaction({add:result})
+
+      // 특정 페이지로 페이지네이션 이동 시키기
+      // params.api.paginationGoToPage(10)
+    })
   }
 
   const onExportClick = () => {
@@ -44,15 +50,27 @@ const Table = () => {
     console.log(node)
   }
 
+  const onPaginationChange = (pageSize) => {
+    gridApi.api.updateGridOptions({
+      paginationPageSize:pageSize
+    }); // paginationSetPageSize 등 메서드가 삭제 되고 setGridOptions 혹은 updateGridOptions를 통해 속성 설정을 해야한다!
+  };
+
   return (
     <div>
       <button onClick={()=>{onExportClick()}}>Export</button>
+      <select className='ml-10' onChange={(e) => onPaginationChange(e.target.value)}>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
       <div
         className={"ag-theme-quartz"}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: 900 }}
       >
         <AgGridReact
-            domLayout='autoHeight'
+            // domLayout='autoHeight'
             // rowData={rowData}
             columnDefs={colDefs}
             defaultColDef={defaultMockColDef}
@@ -62,6 +80,9 @@ const Table = () => {
             onGridReady={onGridReady}
             enableBrowserTooltips={true}
             tooltipShowDelay={{tooltipShowDelay:2}}
+            pagination={true}
+            paginationPageSize={18}   // 페이지네이션 Row 수 직접 지정
+            // paginationAutoPageSize={true}   // 지정된 height에 맞춰 페이지네이션 Row 자동 지정
         />
       </div>
     </div>
