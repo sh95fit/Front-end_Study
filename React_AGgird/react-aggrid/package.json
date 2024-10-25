@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server --watch ./src/server/db.json --port 8888"
   },
   "dependencies": {
     "@pdftron/webviewer": "^10.12.0",
     "ag-grid-community": "^32.3.0",
+    "ag-grid-enterprise": "^32.3.0",
     "ag-grid-react": "^32.3.0",
     "autoprefixer": "^10.4.20",
     "pdfjs-dist": "^4.7.76",
