@@ -37,6 +37,15 @@ const Table = () => {
   }
 
   const onExportClick = () => {
+    const params = {
+      onlySelected: true,
+      columnKeys: gridApi.getColumns()
+    };
+
+    gridApi.exportDataAsCsv(params);
+  }
+
+  const onAllExportClick = () => {
     gridApi.exportDataAsCsv();
   }
 
@@ -80,6 +89,7 @@ const Table = () => {
       </div>
       <div className='flex flex-row items-center justify-between bg-neutral-100'>
         <div>
+          <button className={'bg-yellow-500 rounded-md p-2 m-2 text-white font-bold shadow-lg shadow-yellow-500/50'} onClick={()=>{onAllExportClick()}}>Export all</button>
           <button className={'bg-blue-500 rounded-md p-2 m-2 text-white font-bold shadow-lg shadow-blue-500/50'} onClick={()=>{onExportClick()}}>Export</button>
           <select className='p-2 ml-5 font-bold border-2 border-neutral-500 text-neutral-500' onChange={(e) => onPaginationChange(e.target.value)}>
             <option value="10">10</option>
