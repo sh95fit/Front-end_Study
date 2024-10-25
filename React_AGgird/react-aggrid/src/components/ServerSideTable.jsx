@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // React Data Grid Component
 import { AgGridReact } from 'ag-grid-react';
@@ -11,6 +11,8 @@ import "ag-grid-enterprise";
 
 import { colServerDefs, defaultServerColDef } from '../mock/ServerSideTableConfig';
 
+import _ from 'lodash'
+
 const Table = () => {
 
   const [colDefs, setColDefs] = useState(colServerDefs);
@@ -19,9 +21,26 @@ const Table = () => {
 
   const [hideColumn, setHideColumn] = useState(true)
 
+  // Server-side Quick Filter 예시
+  const [searchText,setSearchText] = useState("")
+
+  useEffect(() => {
+    console.log(searchText)
+    if(gridApi) {
+      onGridReady(gridApi)
+    }
+
+  }, [searchText])
+
+  // lodash를 이용한 검색 적용 방법
+  const search = _.debounce((text) => {
+    console.log(text)
+    setSearchText(text)
+  }, 500)
+
   const datasource = {
     getRows(params) {
-      console.log(JSON.stringify(params.request, null, 1));
+      console.log(JSON.stringify(params, null, 1));
 
       // const {startRow, endRow, filterModel, sortModel} = params.request
 
@@ -29,6 +48,11 @@ const Table = () => {
       const {startRow, endRow, filterModel, sortModel} = params
 
       let url = `http://localhost:8888/olympic?`
+
+      // Quick filter   (현재 버전에서는 적용되지 않음!)
+      if(searchText) {
+        url+=`q=${searchText}&`
+      }
 
       // Sorting
 
@@ -83,6 +107,7 @@ const Table = () => {
       .then(httpResponse => httpResponse.json())
       .then(response => {
         params.successCallback(response, 499);
+        console.log(response)
       })
       .catch(error => {
         console.error(error)
@@ -95,7 +120,7 @@ const Table = () => {
   const onGridReady=params=> {
     // gridApi=params.api
     setGridApi(params.api)
-    gridApi.setGridOption('serverSideDatasource', datasource)
+    // gridApi.setGridOption('datasource', datasource)
 
     // data 불러오기
     // console.log("Json-Server Data Import")
@@ -124,7 +149,7 @@ const Table = () => {
   }
 
   const rowSelectionType = () => {
-    return { mode: 'multiRow', checkboxes: true, isRowSelectable:(node)=>{return node.data ? (node.data.id%2===0) : false } }
+    return { mode: 'multiRow', checkboxes: true}
   }
 
   const onSelectionChanged = (event) => {
@@ -156,15 +181,25 @@ const Table = () => {
   }
 
   // 로딩 적용
-  const components = {
-    loading:(params)=> {
-      if(params.value!==undefined){
-        return params.value
-      } else {
-        return "<img src='https://www.ag-grid.com/example-assets/loading.gif' />"
-      }
+  const LoadingComponent = (props) => {
+    return (
+      <div className="flex items-center justify-center w-full h-full loading-container">
+        {props.value !== undefined ? (
+          props.value
+        ) : (
+          <img src="https://www.ag-grid.com/example-assets/loading.gif" alt="Loading..." />
+        )}
+      </div>
+    );
+  };
+
+  // gridOptions 정의
+  const gridOptions = {
+    components: {
+      loading: LoadingComponent,
     }
-  }
+  };
+
 
   return (
     <div className='flex flex-col justify-center'>
@@ -184,7 +219,8 @@ const Table = () => {
           <button className="p-2 m-2 ml-8 font-bold text-white bg-red-500 rounded-md shadow-lg shadow-red-500/50" onClick={showColumn}>Show Body</button>
         </div>
         <div className='flex-grow p-2 ml-10'>
-          <input className='w-full p-2 border-2 border-green-500 rounded-2xl focus:outline-none focus:border-none focus:ring focus:ring-green-200' type="search" placeholder='Search somethings...' onChange={onFilterTextChange}/>
+          {/* <input className='w-full p-2 border-2 border-green-500 rounded-2xl focus:outline-none focus:border-none focus:ring focus:ring-green-200' type="search" placeholder='Search somethings...' onChange={e=>setSearchText(e.target.value)}/> */}
+          <input className='w-full p-2 border-2 border-green-500 rounded-2xl focus:outline-none focus:border-none focus:ring focus:ring-green-200' type="search" placeholder='Search somethings...' onChange={e=>search(e.target.value)}/>
         </div>
       </div>
       <div
@@ -207,8 +243,8 @@ const Table = () => {
             // paginationPageSizeSelector={[18, 10, 20, 50, 100]}
             // paginationPageSize={18}   // 페이지네이션 Row 수 직접 지정
             // paginationAutoPageSize={true}   // 지정된 height에 맞춰 페이지네이션 Row 자동 지정
-            serverSideDatasource={serverSideDatasource}
-            components={components}
+            datasource={datasource}
+            gridOptions={gridOptions}
         />
       </div>
     </div>
