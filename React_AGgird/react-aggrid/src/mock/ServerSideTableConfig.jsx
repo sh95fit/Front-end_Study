@@ -1,5 +1,5 @@
 export const colServerDefs = [
-  { headerName: "Athlete", field:"athlete" },
+  { headerName: "Athlete", field:"athlete", cellRenderer:'loading' },
   { headerName: "Age", field:"age", hide:true },
   { headerName: "Country", field:"country", hide:true },
   { headerName: "Year", field:"year", hide:true },

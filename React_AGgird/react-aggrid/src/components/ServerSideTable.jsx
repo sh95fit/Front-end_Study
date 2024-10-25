@@ -22,7 +22,12 @@ const Table = () => {
   const datasource = {
     getRows(params) {
       console.log(JSON.stringify(params.request, null, 1));
-      const {startRow, endRow, filterModel, sortModel} = params.request
+
+      // const {startRow, endRow, filterModel, sortModel} = params.request
+
+      // infinit scroll 적용
+      const {startRow, endRow, filterModel, sortModel} = params
+
       let url = `http://localhost:8888/olympic?`
 
       // Sorting
@@ -150,6 +155,17 @@ const Table = () => {
     )
   }
 
+  // 로딩 적용
+  const components = {
+    loading:(params)=> {
+      if(params.value!==undefined){
+        return params.value
+      } else {
+        return "<img src='https://www.ag-grid.com/example-assets/loading.gif' />"
+      }
+    }
+  }
+
   return (
     <div className='flex flex-col justify-center'>
       <div className='p-4 text-4xl text-center'>
@@ -179,6 +195,7 @@ const Table = () => {
             // domLayout='autoHeight'
             // rowData={rowData}
             columnDefs={colDefs}
+            rowModelType='infinite'
             defaultColDef={defaultServerColDef}
             rowSelection={rowSelectionType()}
             onRowSelected={onRowSelected}
@@ -186,11 +203,12 @@ const Table = () => {
             onGridReady={onGridReady}
             enableBrowserTooltips={true}
             tooltipShowDelay={{tooltipShowDelay:2}}
-            pagination={true}
-            paginationPageSizeSelector={[18, 10, 20, 50, 100]}
-            paginationPageSize={18}   // 페이지네이션 Row 수 직접 지정
+            // pagination={true}
+            // paginationPageSizeSelector={[18, 10, 20, 50, 100]}
+            // paginationPageSize={18}   // 페이지네이션 Row 수 직접 지정
             // paginationAutoPageSize={true}   // 지정된 height에 맞춰 페이지네이션 Row 자동 지정
             serverSideDatasource={serverSideDatasource}
+            components={components}
         />
       </div>
     </div>

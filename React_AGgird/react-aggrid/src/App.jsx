@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 
 import Table from './components/Table';
-import ServerSideTable from './components/ServerSideTable'
+// import ServerSideTable from './components/ServerSideTable'
 // import FileDropzone from './components/FileDropzone'
 
 
