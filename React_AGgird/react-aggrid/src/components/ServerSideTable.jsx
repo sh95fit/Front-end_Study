@@ -19,9 +19,78 @@ const Table = () => {
 
   const [hideColumn, setHideColumn] = useState(true)
 
+  const datasource = {
+    getRows(params) {
+      console.log(JSON.stringify(params.request, null, 1));
+      const {startRow, endRow, filterModel, sortModel} = params.request
+      let url = `http://localhost:8888/olympic?`
+
+      // Sorting
+
+      /*
+        sortModel 형태
+
+        "sortModel": {
+          "colId": "컬럼",
+          "sort": "desc|asc"
+        }
+      */
+
+
+      // json-server doc 상 _order이 없으므로 실적용 시 참조
+      // _sort = -colId1, colId2   (복수 구분자 콤마, 오름차순/내림차순 구분 부호(- : desc, + : asc))
+      // 아래 코드는 버전 업데이트 전 코드로 예상 (params 확인 후 적용)
+      if (sortModel.length) {
+        const sortFields = sortModel.map(({ colId, sort }) =>
+          sort === 'desc' ? `-${colId}` : `${colId}`
+        ).join(',');
+        url += `_sort=${sortFields}&`;
+      }
+
+
+      // Filtering
+
+      /*
+        filterModel 형태
+
+        "filterModel": {
+          "column명": {
+            "filterType" : "text",
+            "type" : "contains",
+            "filter" : "입력한 filter 조건값"
+          }
+        }
+      */
+      const filterKeys=Object.keys(filterModel)
+
+      filterKeys.forEach(filter=>{
+        const filterValue = filterModel[filter].filter;
+        if (filterValue) {
+          url += `${filter}=${filterValue}&`;
+        }
+      })
+
+
+      // Pagination
+      url+=`_start=${startRow}&_end=${endRow}`
+
+      fetch(url)
+      .then(httpResponse => httpResponse.json())
+      .then(response => {
+        params.successCallback(response, 499);
+      })
+      .catch(error => {
+        console.error(error)
+        params.failCallback()
+      })
+    }
+  }
+
+
   const onGridReady=params=> {
     // gridApi=params.api
     setGridApi(params.api)
+    gridApi.setGridOption('serverSideDatasource', datasource)
 
     // data 불러오기
     // console.log("Json-Server Data Import")
@@ -34,70 +103,6 @@ const Table = () => {
     //   // 특정 페이지로 페이지네이션 이동 시키기
     //   // params.api.paginationGoToPage(10)
     // })
-
-    const datasource = {
-      getRows(params) {
-        console.log(JSON.stringify(params.request, null, 1));
-        const {startRow, endRow, filterModel, sortModel} = params.request
-        let url = `http://localhost:8888/olympic?`
-
-        // Sorting
-
-        /*
-          sortModel 형태
-
-          "sortModel": {
-            "colId": "컬럼",
-            "sort": "desc|asc"
-          }
-        */
-
-
-        // json-server doc 상 _order이 없으므로 실적용 시 참조
-        // _sort = -colId1, colId2   (복수 구분자 콤마, 오름차순/내림차순 구분 부호(- : desc, + : asc))
-        // 아래 코드는 버전 업데이트 전 코드로 예상 (params 확인 후 적용)
-        if(sortModel.length) {
-          const {colId, sort} = sortModel[0]
-          url+=`_sort=${colId}&_order=${sort}&`
-        }
-
-
-        // Filtering
-
-        /*
-          filterModel 형태
-
-          "filterModel": {
-            "column명": {
-              "filterType" : "text",
-              "type" : "contains",
-              "filter" : "입력한 filter 조건값"
-            }
-          }
-        */
-        const filterKeys=Object.keys(filterModel)
-
-        filterKeys.forEach(filter=>{
-          url+=`${filter}=${filterModel[filter].filter}&`
-        })
-
-
-        // Pagination
-        url+=`_start=${startRow}&_end=${endRow}`
-
-        fetch(url)
-        .then(httpResponse => httpResponse.json())
-        .then(response => {
-          params.successCallback(response, 499);
-        })
-        .catch(error => {
-          console.error(error)
-          params.failCallback()
-        })
-      }
-    }
-
-
   }
 
   const onExportClick = () => {
@@ -185,6 +190,7 @@ const Table = () => {
             paginationPageSizeSelector={[18, 10, 20, 50, 100]}
             paginationPageSize={18}   // 페이지네이션 Row 수 직접 지정
             // paginationAutoPageSize={true}   // 지정된 height에 맞춰 페이지네이션 Row 자동 지정
+            serverSideDatasource={serverSideDatasource}
         />
       </div>
     </div>

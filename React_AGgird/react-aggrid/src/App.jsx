@@ -10,8 +10,8 @@ function App() {
   return (
     // <FileDropzone />
     <div>
-      {/* <Table /> */}
-      <ServerSideTable />
+      <Table />
+      {/* <ServerSideTable /> */}
     </div>
   )
 }
