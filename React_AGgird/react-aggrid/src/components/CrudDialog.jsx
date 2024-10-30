@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const CrudDialog = ({ title, footer=null, children, onClose, width=800, ...props }) => {
+const CrudDialog = ({ title, footer=null, children, onClose, width=500, ...props }) => {
   return (
     <div id="modal-overlay" className='bg-black/50 absolute z-[99] w-screen h-screen'>
       <div
