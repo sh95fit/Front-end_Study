@@ -37,6 +37,14 @@ const Table = () => {
     }));
   };
 
+  const handleDelete = (id) => {
+    const confirm=window.confirm("Are you sure, you want to delete this row", id)
+    console.log(confirm)
+    if(confirm){
+      fetch(url+`/${id}`,{method:"DELETE"}).then(resp=>resp.json()).then(resp=>getUsers())
+    }
+  }
+
   const handleFormSubmit = () => {
     // console.log(formData)
     fetch(url,{method:"POST",body:JSON.stringify(formData),headers:{
@@ -59,13 +67,32 @@ const Table = () => {
     fetch(url).then(resp=>resp.json()).then(resp=>setTableData(resp))
   }
 
-  const columnDefs = [
-    { headerName: "ID", field: "id"},
-    { headerName: "Name", field: "name"},
-    { headerName: "Email", field: "email"},
-    { headerName: "Phone", field: "phone"},
-    { headerName: "Date of Birth", field: "dob"},
-  ]
+  const ActionsRenderer = (params) => (
+    <div className='flex items-center justify-center h-full gap-3'>
+      <button className='flex items-center justify-center h-10 p-1 text-white bg-green-700 rounded-md hover:bg-green-400'
+        onClick={()=>console.log(params.value)}
+      >
+        Update
+      </button>
+      <button className='flex items-center justify-center h-10 p-1 text-white bg-red-700 rounded-md hover:bg-red-400'
+        onClick={()=>handleDelete(params.value)}
+      >
+        Delete
+      </button>
+    </div>
+  );
+
+  const gridOptions = {
+    rowHeight: 50,
+    columnDefs: [
+      { headerName: "ID", field: "id"},
+      { headerName: "Name", field: "name"},
+      { headerName: "Email", field: "email"},
+      { headerName: "Phone", field: "phone"},
+      { headerName: "Date of Birth", field: "dob"},
+      { headerName: "Actions", field: "id", cellRenderer: ActionsRenderer, cellStyle: { textAlign: "center" }}
+    ]
+  }
 
   const onGridReady = (params) => {
     setGridApi(params)
@@ -137,7 +164,8 @@ const Table = () => {
       >
         <AgGridReact
           rowData={tableData}
-          columnDefs={columnDefs}
+          gridOptions={gridOptions}
+          // columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           onGridReady={onGridReady}
         />

@@ -1,39 +1,11 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "Raj",
-      "email": "raj@gmail.com",
-      "phone": "01012341234",
-      "dob": "29/10/2024"
-    },
-    {
       "name": "test",
       "email": "test@test.com",
       "phone": "010-1234-1234",
-      "dob": "2024/10/30",
-      "id": 2
-    },
-    {
-      "name": "admin",
-      "email": "admin@admin.com",
-      "phone": "010-1234-1234",
-      "dob": "2024/10/30",
-      "id": 3
-    },
-    {
-      "name": "nice",
-      "email": "nice@nice.com",
-      "phone": "010-1234-1234",
-      "dob": "2024/10/30",
-      "id": 4
-    },
-    {
-      "name": "hello",
-      "email": "hello@hello.com",
-      "phone": "010-1111-2222",
-      "dob": "2024/10/30",
-      "id": 5
+      "dob": "2024-10-30",
+      "id": 1
     }
   ]
 }
