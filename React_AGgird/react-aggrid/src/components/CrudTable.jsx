@@ -13,7 +13,7 @@ import TextField from './TextField';
 
 const Table = () => {
 
-  const initialValue = {name: '', email: '', phone: '', dob: ''}
+  const initialValue = {id:'', name: '', email: '', phone: '', dob: ''}
 
   const [gridApi, setGridApi] = useState(null)
   const [tableData, setTableData] = useState(null)
@@ -27,6 +27,7 @@ const Table = () => {
   }
 
   const handleClickClose = () => {
+    setFormData(initialValue)
     setModalOpen(false);
   }
 
@@ -45,16 +46,31 @@ const Table = () => {
     }
   }
 
+  const handleUpdate = (oldData) => {
+    console.log(oldData)
+    setFormData(oldData)
+    handleClickOpen()
+  }
+
   const handleFormSubmit = () => {
     // console.log(formData)
-    fetch(url,{method:"POST",body:JSON.stringify(formData),headers:{
-      'content-type':"application/json"
-    }}).then(resp=>resp.json())
-    .then(resp=>{
-      handleClickClose()
-      getUsers()
-      setFormData(initialValue)
-    })
+    if(formData.id) {
+      fetch(url+`/${formData.id}`,{method:"PUT",body:JSON.stringify(formData), headers:{
+        'content-type':"application/json"
+      }}).then(resp=>resp.json())
+      .then(resp=>{
+        handleClickClose()
+        getUsers()
+      })
+    } else {
+      fetch(url,{method:"POST",body:JSON.stringify(formData),headers:{
+        'content-type':"application/json"
+      }}).then(resp=>resp.json())
+      .then(resp=>{
+        handleClickClose()
+        getUsers()
+      })
+    }
   }
 
   const url = 'http://localhost:8888/users'
@@ -70,7 +86,7 @@ const Table = () => {
   const ActionsRenderer = (params) => (
     <div className='flex items-center justify-center h-full gap-3'>
       <button className='flex items-center justify-center h-10 p-1 text-white bg-green-700 rounded-md hover:bg-green-400'
-        onClick={()=>console.log(params.value)}
+        onClick={()=>handleUpdate(params.data)}
       >
         Update
       </button>
@@ -124,12 +140,12 @@ const Table = () => {
 
       {modalOpen && (
         <CrudDialog
-          title={<div className="py-4 text-xl font-black">Create New User</div>}
+          title={formData.id ? <div className="py-4 text-xl font-black">Update User</div> : <div className="py-4 text-xl font-black">Create New User</div>}
           onClose={() => handleClickClose()}
           footer={
             <div className="flex justify-end gap-2 py-2">
               <button className='p-2 pl-4 pr-4 m-1 text-white bg-blue-700 rounded-md hover:bg-blue-400' onClick={() => handleFormSubmit()}>
-                OK
+                {formData.id? "Update" : "Submit"}
               </button>
               <button className='p-2 pl-4 pr-4 m-1 text-white bg-red-700 rounded-md hover:bg-red-400' onClick={() => handleClickClose()}>
                 Cancel
@@ -137,22 +153,22 @@ const Table = () => {
             </div>
           }
         >
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <div className="flex gap-4 mb-4 item-center">
                 <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold">Name</span>
-                <TextField placeholder={"Enter name"} value={formData.name} onChange={handleInputChange("name")} />
+                <TextField placeholder={"Enter name"} type={"text"} value={formData.name} onChange={handleInputChange("name")} />
             </div>
             <div className="flex gap-4 mb-4 item-center">
                 <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold whitespace-nowrap">E-mail</span>
-                <TextField placeholder={"Enter e-mail"} value={formData.email} onChange={handleInputChange("email")} />
+                <TextField placeholder={"Enter e-mail"} type={"text"} value={formData.email} onChange={handleInputChange("email")} />
             </div>
             <div className="flex gap-4 mb-4 item-center">
                 <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold">Phone</span>
-                <TextField placeholder={"Enter phone number"} value={formData.phone} onChange={handleInputChange("phone")} />
+                <TextField placeholder={"Enter phone number"} type={"text"} value={formData.phone} onChange={handleInputChange("phone")} />
             </div>
             <div className="flex gap-4 mb-4 item-center">
                 <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold">DoB</span>
-                <TextField placeholder={"Enter date of birth"} value={formData.dob} onChange={handleInputChange("dob")}/>
+                <TextField placeholder={"Enter date of birth"} type={"date"} value={formData.dob} onChange={handleInputChange("dob")}/>
             </div>
           </form>
         </CrudDialog>
