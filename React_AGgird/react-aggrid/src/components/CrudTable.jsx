@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // React Data Grid Component
 import { AgGridReact } from 'ag-grid-react';
@@ -14,18 +14,25 @@ import TextField from './TextField';
 const Table = () => {
 
   const TODAY = new Date();
+  const nowDate = TODAY.toISOString().split('T')[0]
+
+  // 현재 기준 2년 전
+  const twoYearsAgoDate = new Date(TODAY);
+  twoYearsAgoDate.setFullYear(TODAY.getFullYear() - 2)
+  const twoYearsAgo = twoYearsAgoDate.toISOString().split('T')[0];
 
   const initialValue = {id:'', name: '', email: '', phone: '', dob: ''}
 
   const [gridApi, setGridApi] = useState(null)
+  const gridApiRef = useRef(null);
   const [tableData, setTableData] = useState(null)
 
   const [modalOpen, setModalOpen] = useState(false);
 
   const [formData, setFormData] = useState(initialValue);
 
-  const [startDate, setStartDate] = useState("2024-01-01");
-  const [endDate, setEndDate] = useState(TODAY.toISOString().split('T')[0]);
+  const [startDate, setStartDate] = useState(twoYearsAgo);
+  const [endDate, setEndDate] = useState(nowDate);
 
   const handleClickOpen = () => {
     setModalOpen(true);
@@ -81,10 +88,18 @@ const Table = () => {
   const url = 'http://localhost:8888/users'
 
   useEffect(() => {
-    getUsers();
     if (gridApi) {
-      DateFilter(startDate, endDate)
+      if(startDate !== '' && endDate !== '' && startDate>endDate) {
+        alert("Start Date should be less than End Date")
+        setStartDate(endDate)
+      } else if(endDate > nowDate) {
+        alert("End Date should be less than or equal to Now Date")
+        setEndDate(nowDate)
+      } else {
+        DateFilter(startDate, endDate)
+      }
     }
+    getUsers();
   },[startDate, endDate, gridApi])
 
   const getUsers= () => {
@@ -106,9 +121,25 @@ const Table = () => {
     </div>
   );
 
+  const toDate = (date) => {
+    const transDate = date.split(' ')[0]
+    // const newDate = new Date(date)
+    // console.log(newDate)
+
+    // // 한국 표준시 변환
+    // const kstOffset = newDate.getTimezoneOffset() * 60000;
+    // const kstDate = new Date(newDate.getTime() + kstOffset + (9 * 3600000));
+
+    // const transDate = kstDate.toISOString().split('T')[0];
+
+    return transDate
+  }
+
   const filterParams = {
-    minValidDate: "2024-01-01",
-    maxValidDate: TODAY,
+    // minValidDate: "2024-01-01",
+    // maxValidDate: TODAY,
+    minValidYear: 2022,
+    maxValidYear: 2024,
     comparator: (filterLocalDateAtMidnight, cellValue) => {    // filterLocalDateAtMidnight = 필터 적용 함수 반영  / cellValue : 실제 셀에 있는 값
       if (!cellValue) return -1; // 값이 없는 경우 필터에서 제외
 
@@ -127,18 +158,38 @@ const Table = () => {
     filterOptions: ['inRange', 'lessThan', 'greaterThan'], // 사용 가능한 필터 옵션 추가
   };
 
+  const getFilterType = () => {
+    if(startDate !== '' && endDate !== '') return 'inRange';
+    else if (startDate !== '') return 'greaterThan';
+    else if (endDate !== '') return 'lessThan';
+  }
+
+  const filterChanged = () => {
+    const filterModel = gridApiRef.current.getColumnFilterModel('dob');
+
+    if(filterModel) {
+      const dateFrom = filterModel.dateFrom;
+      const dateTo = filterModel.dateTo;
+
+      const transDateFrom = toDate(dateFrom)
+      const transDateTo = toDate(dateTo)
+
+      setStartDate(transDateFrom)
+      setEndDate(transDateTo)
+    }
+  }
+
   const DateFilter = async (startDate, endDate) => {
     var dateFilterComponent = await gridApi.api.getColumnFilterInstance('dob');
-    console.log(dateFilterComponent)
+    // console.log(dateFilterComponent)
     dateFilterComponent.setModel({
-      type: 'inRange',
+      type: getFilterType(),
       dateFrom: startDate,
       // dateTo: TODAY.toISOString().split('T')[0],
       dateTo: endDate,
     });
     gridApi.api.onFilterChanged();
   }
-
 
   const gridOptions = {
     rowHeight: 50,
@@ -154,6 +205,9 @@ const Table = () => {
 
   const onGridReady = (params) => {
     setGridApi(params)
+    gridApiRef.current = params.api;
+
+    params.api.addEventListener('filterChanged', filterChanged);
   }
 
   const defaultColDef = {
@@ -175,12 +229,12 @@ const Table = () => {
         <div className="flex items-center w-full gap-2">
           <div className="flex w-[20%] gap-2">
             <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold">From:</span>
-            <TextField placeholder={"Enter date of birth"} type={"date"} onChange={e=>setStartDate(e.target.value)}/>
+            <TextField placeholder={"Enter date of birth"} type={"date"} value={startDate} onChange={e=>setStartDate(e.target.value)}/>
           </div>
           <span>-</span>
           <div className="flex w-[20%] gap-2">
             <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold">To:</span>
-            <TextField placeholder={"Enter date of birth"} type={"date"} onChange={e=>setEndDate(e.target.value)}/>
+            <TextField placeholder={"Enter date of birth"} type={"date"} value={endDate} onChange={e=>setEndDate(e.target.value)}/>
           </div>
         </div>
         <div className='flex-shrink-0'>
