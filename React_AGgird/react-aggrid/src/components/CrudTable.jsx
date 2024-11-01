@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 
 // React Data Grid Component
 import { AgGridReact } from 'ag-grid-react';
@@ -7,9 +7,11 @@ import "ag-grid-community/styles/ag-grid.css";
 // Optional Theme applied to the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 
+import "ag-grid-enterprise";
 
 import CrudDialog from './CrudDialog'
 import TextField from './TextField';
+import { clearLocalStorage, getLocalStorage, setLocalStorage } from '../utility';
 
 const Table = () => {
 
@@ -24,7 +26,9 @@ const Table = () => {
   const initialValue = {id:'', name: '', email: '', phone: '', dob: ''}
 
   const [gridApi, setGridApi] = useState(null)
-  const gridApiRef = useRef(null);
+  const gridApiRef = useRef(null); // 날짜 변경에 임시 사용
+  const gridRef = useRef();
+
   const [tableData, setTableData] = useState(null)
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -208,6 +212,8 @@ const Table = () => {
     gridApiRef.current = params.api;
 
     params.api.addEventListener('filterChanged', filterChanged);
+
+    restoreState();
   }
 
   const defaultColDef = {
@@ -216,6 +222,49 @@ const Table = () => {
     filter: true,
     floatingFilter: true
   }
+
+
+  // Column State
+  const saveState = useCallback(() => {
+    // window.colState = gridRef.current.api.getColumnState();
+    const colState = gridRef.current.api.getColumnState();
+    setLocalStorage(colState)
+    closeSidebarToolpanel();
+    console.log("column state saved");
+  }, []);
+
+  const restoreState = useCallback(() => {
+    const colState = getLocalStorage()
+    // if (!window.colState) {
+    //   console.log("no columns state to restore by, you must save state first");
+    //   return;
+    // }
+    if (!colState) {
+      console.log("no columns state to restore by, you must save state first");
+      return;
+    }
+    // gridRef.current.api.applyColumnState({
+    //   state: window.colState,
+    //   applyOrder: true,
+    // });
+    gridRef.current.api.applyColumnState({
+      state: colState,
+      applyOrder: true,
+    });
+    closeSidebarToolpanel();
+    console.log("column state restored");
+  // }, [window]);
+  });
+
+  const resetState = useCallback(() => {
+    gridRef.current.api.resetColumnState();
+    clearLocalStorage();
+    closeSidebarToolpanel();
+    console.log("column state reset");
+  }, []);
+
+
+  const closeSidebarToolpanel = () => [gridRef.current.api.closeToolPanel()];
 
   return (
     <div className='flex flex-col'>
@@ -226,7 +275,7 @@ const Table = () => {
         <h1>CRUD Operation with Json-Server in Ag-grid</h1>
       </div>
       <div className="flex items-center justify-between">
-        <div className="flex items-center w-full gap-2">
+        <div className="flex items-center w-1/3 gap-2">
           <div className="flex w-[20%] gap-2">
             <span className="items-center justify-center w-[15%] m-2 text-lg font-semibold">From:</span>
             <TextField placeholder={"Enter date of birth"} type={"date"} value={startDate} onChange={e=>setStartDate(e.target.value)}/>
@@ -237,7 +286,27 @@ const Table = () => {
             <TextField placeholder={"Enter date of birth"} type={"date"} value={endDate} onChange={e=>setEndDate(e.target.value)}/>
           </div>
         </div>
-        <div className='flex-shrink-0'>
+        <div className='flex items-center justify-center flex-shrink-0 w-1/3 gap-2'>
+          <button
+            className='p-3 m-2 font-bold text-white bg-green-600 rounded-md shadow-md hover:bg-green-500'
+            onClick={saveState}
+          >
+            Save State
+          </button>
+          <button
+            className='p-3 m-2 font-bold text-white bg-red-600 rounded-md shadow-md hover:bg-red-500'
+            onClick={restoreState}
+          >
+            Restore State
+          </button>
+          <button
+            className='p-3 m-2 font-bold text-white bg-orange-600 rounded-md shadow-md hover:bg-orange-500'
+            onClick={resetState}
+          >
+            Reset State
+          </button>
+        </div>
+        <div className='flex justify-end flex-shrink-0 w-1/3'>
           <button
             className='p-3 m-2 font-bold text-white bg-blue-700 rounded-md shadow-md hover:bg-blue-500'
             onClick={() => handleClickOpen()}
@@ -288,11 +357,47 @@ const Table = () => {
         style={{ width: '100%', height: 900 }}
       >
         <AgGridReact
+          ref={gridRef}
           rowData={tableData}
           gridOptions={gridOptions}
           // columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           onGridReady={onGridReady}
+          sideBar={{
+            toolPanels : [
+              {
+                id: 'columns',
+                labelDefault: "Columns",
+                iconKey: "columns",
+                toolPanel: 'agColumnsToolPanel'
+              },
+              {
+                id: 'save',
+                labelDefault: "Save",
+                iconKey: "menu",
+                toolPanel: () => <div className="p-2 mt-4">
+                  <button
+                    className='w-[93%] p-3 m-2 font-bold text-white bg-green-600 rounded-md shadow-md hover:bg-green-500'
+                    onClick={saveState}
+                  >
+                    Save State
+                  </button>
+                  <button
+                    className='w-[93%] p-3 m-2 font-bold text-white bg-red-600 rounded-md shadow-md hover:bg-red-500'
+                    onClick={restoreState}
+                  >
+                    Restore State
+                  </button>
+                  <button
+                    className='w-[93%] p-3 m-2 font-bold text-white bg-orange-600 rounded-md shadow-md hover:bg-orange-500'
+                    onClick={resetState}
+                  >
+                    Reset State
+                  </button>
+                </div>
+              },
+            ]
+          }}
         />
 
       </div>
