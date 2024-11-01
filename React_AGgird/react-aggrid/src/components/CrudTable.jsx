@@ -13,6 +13,8 @@ import CrudDialog from './CrudDialog'
 import TextField from './TextField';
 import { clearLocalStorage, getLocalStorage, setLocalStorage } from '../utility';
 
+import DetailsComponent from './Details';
+
 const Table = () => {
 
   const TODAY = new Date();
@@ -198,7 +200,7 @@ const Table = () => {
   const gridOptions = {
     rowHeight: 50,
     columnDefs: [
-      { headerName: "ID", field: "id"},
+      { headerName: "ID", field: "id", cellRenderer:'agGroupCellRenderer'},
       { headerName: "Name", field: "name"},
       { headerName: "Email", field: "email"},
       { headerName: "Phone", field: "phone"},
@@ -265,6 +267,28 @@ const Table = () => {
 
 
   const closeSidebarToolpanel = () => [gridRef.current.api.closeToolPanel()];
+
+
+  const onFirstDataRendered = (params) => {
+    // 전체 행 디테일 펼치기
+    // setTimeout(() => {
+    //   params.api.forEachNode((node) => {
+    //     node.setExpanded(true); // 각 행의 디테일을 펼치는 코드
+    //   });
+    // }, 1);
+
+    // 특정 행 디테일 펼치기
+    // setTimeout(() => {
+    //   gridApi.api.getDisplayedRowAtIndex(0).setExpanded(true);
+    // }, 3)
+
+    // 특정 행 디테일 펼치기
+    setTimeout(() => {
+      const row1 = params.api.getDisplayedRowAtIndex(0)
+      row1.setExpanded(true);
+    }, 3)
+  }
+
 
   return (
     <div className='flex flex-col'>
@@ -398,6 +422,10 @@ const Table = () => {
               },
             ]
           }}
+          masterDetail={true}
+          detailCellRenderer={(props) => <DetailsComponent {...props} />}
+          detailRowHeight={320}
+          onFirstDataRendered={onFirstDataRendered}
         />
 
       </div>
